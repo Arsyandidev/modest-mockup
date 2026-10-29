@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artikel — modest.id</title>
+<meta name="description" content="Artikel modest.id.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="assets/css/modest.css" rel="stylesheet">
+</head>
+<body data-page="article">
+<div class="progress-read" id="progress"></div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="container-x">
+    <span id="today"></span>
+    <div class="d-none d-sm-flex gap-4">
+      <a href="about.html">About</a><a href="designers.html">Designer Directory</a><a href="javascript:void(0)" onclick="openSaved()">Bacaan Tersimpan</a>
+    </div>
+  </div>
+</div>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <a class="logo" href="index.html">modest<span>.</span>id</a>
+  <div class="tagline">style modestly, live faithfully</div>
+</header>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="container-x">
+    <button class="icon-btn d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#mnav" aria-label="Menu"><i class="bi bi-list"></i></button>
+    <a class="nav-logo" href="index.html">modest<span class="text-gold">.</span>id</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" data-nav="">Home</a></li>
+      <li><a href="fashion.html" data-nav="fashion">Fashion</a></li>
+      <li><a href="lifestyle.html" data-nav="lifestyle">Lifestyle</a></li>
+      <li><a href="art-culture.html" data-nav="art">Art &amp; Culture</a></li>
+      <li><a href="iqra.html" data-nav="iqra">Iqra</a></li>
+      <li><a href="catalog.html" data-nav="catalog">Catalog</a></li>
+      <li><a href="designers.html" data-nav="designers">Designer Directory</a></li>
+    </ul>
+    <div class="d-flex gap-1 ms-auto ms-lg-0">
+      <button class="icon-btn" onclick="openSearch()" aria-label="Cari"><i class="bi bi-search"></i></button>
+      <button class="icon-btn" onclick="openSaved()" aria-label="Tersimpan"><i class="bi bi-bookmark"></i><span class="dot d-none" id="savedCount">0</span></button>
+      <button class="icon-btn" onclick="openCart()" aria-label="Keranjang"><i class="bi bi-bag"></i><span class="dot d-none" id="cartCount">0</span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mnav">
+  <div class="offcanvas-header px-4 pt-4">
+    <span class="logo" style="font-size:32px">modest<span>.</span>id</span>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body px-4 mnav" id="mnavLinks">
+    <a href="index.html" data-nav="">Home</a>
+    <a href="fashion.html" data-nav="fashion">Fashion</a>
+    <a href="lifestyle.html" data-nav="lifestyle">Lifestyle</a>
+    <a href="art-culture.html" data-nav="art">Art &amp; Culture</a>
+    <a href="iqra.html" data-nav="iqra">Iqra</a>
+    <a href="catalog.html" data-nav="catalog">Catalog</a>
+    <a href="designers.html" data-nav="designers">Designer Directory</a>
+  </div>
+</div>
+
+<main id="app"></main>
+
+<!-- NEWSLETTER -->
+<section class="blk news">
+  <div class="container-x">
+    <div class="eyebrow">Newsletter</div>
+    <h2 class="mt-2 mb-2">Kabar mode modest, setiap Jumat.</h2>
+    <p class="text-muted mb-0" style="font-weight:300">Kurasi cerita fashion, gaya hidup, dan seni pilihan redaksi — langsung ke inbox Anda.</p>
+    <form onsubmit="subscribe(event)">
+      <input type="email" required placeholder="Alamat email Anda" id="nlEmail">
+      <button type="submit">Berlangganan <i class="bi bi-arrow-right ms-1"></i></button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container-x">
+    <div class="row g-4 g-lg-5">
+      <div class="col-lg-4">
+        <a class="logo" href="index.html">modest<span>.</span>id</a>
+        <p class="mt-3" style="max-width:340px">Rumah bagi muslimah modern untuk menemukan inspirasi gaya modest, gaya hidup, seni, dan spiritualitas — dikurasi dengan hati.</p>
+        <div class="soc mt-4"><a href="javascript:void(0)"><i class="bi bi-instagram"></i></a><a href="javascript:void(0)"><i class="bi bi-tiktok"></i></a><a href="javascript:void(0)"><i class="bi bi-youtube"></i></a><a href="javascript:void(0)"><i class="bi bi-twitter-x"></i></a></div>
+      </div>
+      <div class="col-6 col-lg-2"><h6>Kanal</h6><div id="footCats"><a href="fashion.html">Fashion</a><a href="lifestyle.html">Lifestyle</a><a href="art-culture.html">Art &amp; Culture</a><a href="iqra.html">Iqra</a><a href="catalog.html">Catalog</a><a href="designers.html">Designer Directory</a></div></div>
+      <div class="col-6 col-lg-2"><h6>Modest.id</h6><a href="about.html">Tentang Kami</a><a href="javascript:void(0)" onclick="toast('Halaman redaksi segera hadir')">Redaksi</a><a href="javascript:void(0)" onclick="toast('Media kit telah dikirim ke email Anda')">Media Kit</a><a href="javascript:void(0)" onclick="toast('Form kontak segera hadir')">Kontak</a></div>
+      <div class="col-lg-4"><h6>Terpopuler</h6><div id="footPop"></div></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 modest.id — dikelola oleh Modest Creative Team.</span>
+      <span>Kebijakan Privasi · Syarat & Ketentuan</span>
+    </div>
+  </div>
+</footer>
+
+<!-- SEARCH -->
+<div id="search">
+  <div class="container-x py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <span class="eyebrow">Cari di modest.id</span>
+      <button class="icon-btn" onclick="closeSearch()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <input id="q" placeholder="Ketik kata kunci…" autocomplete="off">
+    <div class="mt-3 d-flex flex-wrap gap-2" id="qSuggest"></div>
+    <div class="mt-4" id="qResult"></div>
+  </div>
+</div>
+
+<!-- SAVED -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="saved" style="width:420px">
+  <div class="offcanvas-header px-4 pt-4 border-bottom">
+    <div><div class="eyebrow">Koleksi Anda</div><h4 class="serif fw-semibold m-0" style="font-size:28px">Bacaan Tersimpan</h4></div>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body px-4" id="savedList"></div>
+</div>
+
+<!-- CART -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="cart" style="width:440px">
+  <div class="offcanvas-header px-4 pt-4 border-bottom">
+    <div><div class="eyebrow">Belanja</div><h4 class="serif fw-semibold m-0" style="font-size:28px">Keranjang</h4></div>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body px-4 d-flex flex-column" id="cartBody"></div>
+</div>
+
+<!-- DESIGNER MODAL -->
+<div class="modal fade" id="dModal" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content" id="dModalBody"></div></div></div>
+
+<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+  <div id="toast" class="toast align-items-center" role="status"><div class="d-flex"><div class="toast-body" id="toastMsg"></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div>
+</div>
+<button class="to-top" id="toTop" onclick="scrollTo({top:0})"><i class="bi bi-arrow-up"></i></button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/modest.js"></script>
+</body>
+</html>
