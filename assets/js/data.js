@@ -1,7 +1,8 @@
 /* ══════════════════════════════════════════════════════════════════
    DATA — artikel & gambar diambil dari konten modest.id saat ini
 ════════════════════════════════════════════════════════════════════ */
-const IMG = 'https://www.modest.id/public/uploads/';
+// gambar disalin lokal dari modest.id (sertifikat SSL situs lama kedaluwarsa); halaman admin ada satu folder lebih dalam
+const IMG = (location.pathname.includes('/admin/') ? '../' : '') + 'assets/img/uploads/';
 const CATS = [
   {key:'fashion',   label:'Fashion',         desc:'Koleksi terbaru, panggung runway, dan desainer yang membentuk wajah mode modest Indonesia.', subs:['Semua','Runway','Koleksi','Aksesori','Desainer']},
   {key:'lifestyle', label:'Lifestyle',       desc:'Kecantikan, teknologi, perjalanan, dan ekosistem halal untuk keseharian yang lebih bermakna.', subs:['Semua','Beauty','Halal','Tech','Travel']},

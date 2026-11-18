@@ -77,18 +77,8 @@ function viewHome(){
   </div></section>
 
   <section class="blk pt-0"><div class="container-x">
-    <div class="event">
-      ${ph('article/thumbnail-gaya-kini-wastra-dari-sekolah-mode-di-in2motionfest-2025-1761101657.jpg', '', 'IN2MOTIONFEST')}
-      <div class="body">
-        <div class="eyebrow">Agenda · 8–12 Oktober 2025</div>
-        <h3 class="mt-3">IN2MOTIONFEST 2025<br><span class="fst-italic text-gold">One Vision, One Movement</span></h3>
-        <p class="mt-3 mb-4" style="font-weight:300; color:var(--ink-2)">Indonesia International Modest Fashion Festival kembali hadir di Jakarta Convention Center — fashion show, eksibisi, talkshow, dan business matching dalam satu panggung.</p>
-        <div class="d-flex flex-wrap gap-2">
-          <button class="btn btn-ink" onclick="toast('Pengingat agenda ditambahkan ke kalender Anda')"><i class="bi bi-calendar-plus me-2"></i>Ingatkan Saya</button>
-          <a class="btn btn-line" href="article.html?id=wastra-in2motion">Baca Liputan</a>
-        </div>
-      </div>
-    </div>
+    ${secHead('Events', 'Agenda Mendatang', 'events.html')}
+    ${evHomeBlock()}
   </div></section>
 
   <section class="blk pt-0"><div class="container-x">
@@ -633,7 +623,7 @@ function route(){ const pg = document.body.dataset.page; return {page:pg === 'ho
 
 function render(top = true){
   const {page, id} = route();
-  const active = page === 'article' ? (byId(id) || {}).cat : page === 'product' ? 'catalog' : page;
+  const active = page === 'article' ? (byId(id) || {}).cat : page === 'product' ? 'catalog' : page === 'event' ? 'events' : page;
   document.querySelectorAll('[data-nav]').forEach(a => a.classList.toggle('active', a.dataset.nav === active));
 
   let html;
@@ -642,6 +632,10 @@ function render(top = true){
   else if(page === 'article') html = viewArticle(id);
   else if(page === 'designers') html = viewDesigners();
   else if(page === 'catalog') html = viewCatalog();
+  else if(page === 'events') html = viewEvents();
+  else if(page === 'event') html = viewEvent(id);
+  else if(page === 'portfolio') html = viewPortfolio();
+  else if(page === 'project') html = viewProject(id);
   else if(page === 'product') html = viewProduct(id);
   else if(page === 'about') html = viewAbout();
   else html = viewHome();
@@ -649,10 +643,15 @@ function render(top = true){
   app.innerHTML = `<div class="view">${html}</div>`;
 
   clearInterval(heroTimer);
-  if(page === '' || !['article','designers','about','catalog','product'].includes(page) && !catOf(page)){ heroIdx = 0; renderHero(); heroTimer = setInterval(() => heroGo(heroIdx + 1), 6000); }
+  if(page === '' || !['article','designers','about','catalog','product','events','event','portfolio','project'].includes(page) && !catOf(page)){ heroIdx = 0; renderHero(); heroTimer = setInterval(() => heroGo(heroIdx + 1), 6000); }
   if(page === 'designers') drawDesigners();
   if(page === 'catalog') drawCatalog();
+  if(page === 'events') drawEvents();
+  if(page === 'portfolio') drawWorks();
+  tickCountdown();
   if(page === 'article' && byId(id)) document.title = byId(id).title + ' — modest.id';
+  if(page === 'project' && wById(id)) document.title = wById(id).title + ' — Portofolio modest.id';
+  if(page === 'event' && EV.event(id)) document.title = EV.event(id).title + ' — modest.id Events';
   if(page === 'product' && pById(id)) document.title = pById(id).name + ' — modest.id Catalog';
   if(top) scrollTo({top:0});
   bootstrap.Offcanvas.getInstance('#mnav')?.hide();
@@ -691,10 +690,12 @@ function doSearch(){
   const res = A.filter(a => (a.title + ' ' + a.ex + ' ' + a.sub).toLowerCase().includes(q));
   const ds = DESIGNERS.filter(d => d.name.toLowerCase().includes(q));
   const ps = P.filter(p => (p.name + ' ' + p.type + ' ' + brandOf(p).name).toLowerCase().includes(q));
-  $('#qResult').innerHTML = `<div class="meta mb-3">${res.length + ds.length + ps.length} hasil untuk “${esc(q)}”</div>`
+  const es = EV.published().filter(e => (e.title + ' ' + e.cat + ' ' + e.city).toLowerCase().includes(q));
+  $('#qResult').innerHTML = `<div class="meta mb-3">${res.length + ds.length + ps.length + es.length} hasil untuk “${esc(q)}”</div>`
     + ds.map(d => `<div class="list-row" onclick="closeSearch(); openDesigner('${d.id}')"><div class="num"><i class="bi bi-person-badge" style="font-size:22px"></i></div><div><span class="tag-pill">Desainer</span><h6>${esc(d.name)}</h6><div class="meta">${d.cat} · ${d.city}</div></div></div>`).join('')
+    + es.map(e => `<div class="list-row" onclick="closeSearch(); location.href='event.html?id=${e.id}'">${evImg(e, '')}<div class="min-w-0"><span class="tag-pill">Event · ${esc(e.cat)}</span><h6>${esc(e.title)}</h6><div class="meta">${evDateLabel(e, false)} · ${esc(e.city)}</div></div></div>`).join('')
     + ps.map(p => `<div class="list-row" onclick="closeSearch(); location.href='product.html?id=${p.id}'">${pImg(p, '')}<div class="min-w-0"><span class="tag-pill">Catalog · ${esc(brandOf(p).name)}</span><h6>${esc(p.name)}</h6><div class="meta">${rp(p.price)}</div></div></div>`).join('')
-    + (res.length ? res.map(a => listRow(a, 0, true)).join('') : (ds.length || ps.length ? '' : `<div class="empty"><i class="bi bi-search"></i>Tidak ada hasil. Coba kata kunci lain.</div>`));
+    + (res.length ? res.map(a => listRow(a, 0, true)).join('') : (ds.length || ps.length || es.length ? '' : `<div class="empty"><i class="bi bi-search"></i>Tidak ada hasil. Coba kata kunci lain.</div>`));
 }
 $('#q').addEventListener('input', doSearch);
 $('#qResult').addEventListener('click', e => { if(e.target.closest('.list-row[onclick*="article"]')) closeSearch(); });
@@ -723,4 +724,5 @@ if(qp.get('brand')) shop.brands.add(qp.get('brand'));
 if(qp.get('type')) shop.types.add(qp.get('type'));
 updateSaved();
 updateCart();
+updateMyTickets();
 render();
